@@ -18,5 +18,8 @@ Route::get('/post/{id}', function ($id) {
 });
 
 Route::group(['prefix'=>'/admin','alias'=>'admin'],function(){
+    Route::get('/',function (){
+        return view('admin.admin');
+    });
     Route::get('/users',[UsersController::class,'index']);
 });

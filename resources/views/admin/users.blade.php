@@ -1,2 +1,4 @@
 @extends('admin.layouts.main')
-<h1>USERS</h1>
+@section('contenedor')
+<h1>Usuarios</h1>
+@endsection
