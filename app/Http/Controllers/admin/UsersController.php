@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Validator;
+use Illuminate\Support\Facades\Hash;
 class UsersController extends Controller
 {
     public function index () {
@@ -26,7 +27,21 @@ class UsersController extends Controller
             ->with('errorInsertar','Favor de llenar todos los campos')
             ->withErrors($reglas);
         }else{
-            dd("CUMPLE");
+            $usuario = User::create([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'password'=>Hash::make($request->password),
+                'nickname'=>'user_',
+                'img'=>'default.jpg'
+            ]);
+            //parametros del nickname
+            $usuario->nickname = 'user_'.$usuario->id;
+            $usuario->save();
+            
+            return back()
+            ->with('success','Datos insertados correctamente');
+            //dd("DATO INSERTADO");
+            //dd("CUMPLE");
         }
         //dd($request);
     }//llave store

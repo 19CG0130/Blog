@@ -7,6 +7,7 @@
                 <i class="fa fa-plus"></i>
             </button>
         </div>
+
         @if($mensaje=Session::get('errorInsertar'))
             <div class="alert alert-danger">
                 <h5>Error: {{$mensaje}}</h5>
@@ -17,11 +18,19 @@
                 </ul>
             </div>
         @endif
+
+        @if($mensaje=Session::get('success'))
+            <div class="alert alert-success">
+                <h5>Listo: {{$mensaje}}</h5>
+            </div>
+        @endif
+
         <div class="row">
             <table class="table">
                 <thead>
                     <th>Id</th>
                     <th>Nombre</th>
+                    <th>Nickname</th>
                     <th>Email</th>
                     <th>Password</th>
                     <th></th>
@@ -31,6 +40,7 @@
                         <tr>
                             <td>{{ $d->id }}</td>
                             <td>{{ $d->name}}</td>
+                            <td>{{ $d->nickname }}</td>
                             <td>{{ $d->email }}</td>
                             <td>******</td>
                             <td>

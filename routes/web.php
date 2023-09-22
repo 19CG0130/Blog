@@ -24,3 +24,6 @@ Route::group(['prefix'=>'/admin','alias'=>'admin'],function(){
     Route::get('/users',[UsersController::class,'index']);
     Route::post('/users',[UsersController::class,'store']);
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
