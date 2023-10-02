@@ -9,7 +9,8 @@ class Post extends Model
 {
     use HasFactory;
     //declarar campos que se pueden llenar
-    protected $fillable=['title','content','img','slug','likes',
+    protected $fillable=[
+    'title','content','img','slug','likes',
     'id_user','id_category'
     ];
 }
