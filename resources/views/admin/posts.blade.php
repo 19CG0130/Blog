@@ -36,6 +36,8 @@
                     <th></th>
                 </thead>
                 <tbody>
+
+                    <!--se imprimen los distintos registros segun existan -->
                     @foreach ($registros as $d)
                         <tr>
                             <td>{{ $d->id }}</td>
@@ -44,7 +46,9 @@
                             <td>{{ $d->category }}</td>
                             <td>{{ $d->created_at }}</td>
                             <td>
-                                <button class="btn btn-outline-danger">
+                                <button class="btn btn-outline-danger btnEliminar"
+                                    data-id="{{ $d->id }}"
+                                    data-toggle="modal" data-target="#modalDelete">
                                     <i class="fa fa-trash"></i>
                                 </button>
                                 <button class="btn btn-outline-primary">
@@ -53,6 +57,8 @@
                             </td>
                         </tr>
                     @endforeach
+                    <!---->
+
                 </tbody>
             </table>
         </div>
@@ -69,7 +75,7 @@
                     </button>
                 </div>
 
-                <form action="/admin/posts" method="POST">
+                <form action="/admin/post" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
 
@@ -90,7 +96,7 @@
                         <div class="form-group">
                             <label for="">Categoría</label>
                             <select name="id_category" class="form-control">
-                                @foreach($categorys as $c)
+                                @foreach ($categorys as $c)
                                     <option value="{{ $c->id }}">{{ $c->category }}</option>
                                 @endforeach
                             </select>
@@ -105,4 +111,41 @@
             </div>
         </div>
     </div>
+    <!-- Modal DELETE -->
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Eliminar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>¿Deseas eliminar el registro?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        window.onload =()=>{
+            let buttons =document.getElementsByClassName('btnEliminar');
+            console-log(buttons)
+            for(var x=0;x<buttons.length;x++){
+                buttons[x].addEventListener('click', (evt)=>{
+                    let id = evt.target.dataset.id
+                    alert(id)
+                })
+            }
+
+        }
+    </script>
 @endsection

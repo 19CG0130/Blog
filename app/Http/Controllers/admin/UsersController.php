@@ -9,6 +9,11 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 class UsersController extends Controller
 {
+    /* protege si no estas logueado */
+    public function __construct() {
+        $this->middleware('auth');
+    }
+    
     public function index () {
         $data = User::OrderBy('id','DESC')->get();
         return view('admin.users')
