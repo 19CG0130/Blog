@@ -51,7 +51,20 @@
                                     data-toggle="modal" data-target="#modalDelete">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                <button class="btn btn-outline-primary">
+                                <form action="{{ url('admin/post', ['id'=>$d->id]) }}"
+                                    method="POST" id="formEliminar_{{ $d->id }}">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $d->id }}">
+                                    <input type="hidden" name="_method" value="delete">
+
+                                </form>
+                                <button class="btn btn-outline-primary btnUpdate"
+                                    data-toggle="modal"
+                                    data-target="#modalUpdate"
+                                    data-id="{{ $d->id }}"
+                                    data-title="{{ $d->title }}"
+                                    data-content="{{ $d->content }}"
+                                    data-id_category="{{ $d->id_category }}">
                                     <i class="fa fa-edit"></i>
                                 </button>
                             </td>
@@ -127,8 +140,53 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">Eliminar</button>
+                    <button id="btnEliminar" type="button" class="btn btn-danger">Eliminar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal UPDATE -->
+    <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modificar Entrada</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="/admin/post" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="">Titulo:</label>
+                            <input id="title" type="text" class="form-control" name="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Descripcion:</label>
+                            <textarea id="contentUpdate" name="content" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Categoría</label>
+                            <select id="id_category" name="id_category" class="form-control">
+                                @foreach ($categorys as $c)
+                                    <option value="{{ $c->id }}">{{ $c->category }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="text" name="id" id="idUpdate">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -137,14 +195,33 @@
 @section('scripts')
     <script>
         window.onload =()=>{
+            var idEliminar = 0
             let buttons =document.getElementsByClassName('btnEliminar');
-            console-log(buttons)
+            console.log(buttons)
             for(var x=0;x<buttons.length;x++){
                 buttons[x].addEventListener('click', (evt)=>{
-                    let id = evt.target.dataset.id
-                    alert(id)
+                    //evt.stopPropagation();
+                    idEliminar = evt.target.dataset.id
+                    alert(idEliminar)
                 })
             }
+            //btn eliminar
+            document.querySelector("#btnEliminar").addEventListener('click', ()=>{
+                //alert("Vas a eliminar"+idEliminar)
+                document.querySelector("#formEliminar_"+idEliminar).requestSubmit()
+            })
+            //btn update
+            let btns = document.querySelectorAll(".btnUpdate")
+            btns.forEach(ele=>ele.addEventListener('click',(event)=>{
+                let id = event.target.dataset.id
+                let t = event.target.dataset.title
+                let c = event.target.dataset.content
+                let ca = event.target.dataset.id_category
+                document.querySelector("#idUpdate").value = id
+                document.querySelector("#title").value = t
+                document.querySelector("#contentUpdate").value = c
+                document.querySelector("#id_category").value = ca
+            }))
 
         }
     </script>

@@ -66,4 +66,17 @@ class PostController extends Controller
         }
         //dd($request);
     }//llave store
+
+    //no tomar en cuenta la imagen del post a excepcion del default.jpg
+    public function destroy($id){
+        $registro = Post::find($id);
+        if(file_exists( public_path('img/posts/'.$registro->img)) && 
+            $registro->img != 'default.jpg' ){
+                unlink(public_path('img/posts/'.$registro->img));
+            }
+            $registro->delete();
+            return back()
+                ->with('success','Datos eliminados correctamente');
+    }
+    
 }
