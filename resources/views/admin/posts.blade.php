@@ -46,24 +46,20 @@
                             <td>{{ $d->category }}</td>
                             <td>{{ $d->created_at }}</td>
                             <td>
-                                <button class="btn btn-outline-danger btnEliminar"
-                                    data-id="{{ $d->id }}"
+                                <button class="btn btn-outline-danger btnEliminar" data-id="{{ $d->id }}"
                                     data-toggle="modal" data-target="#modalDelete">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                <form action="{{ url('admin/post', ['id'=>$d->id]) }}"
-                                    method="POST" id="formEliminar_{{ $d->id }}">
+                                <form action="{{ url('admin/post', ['id' => $d->id]) }}" method="POST"
+                                    id="formEliminar_{{ $d->id }}">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $d->id }}">
                                     <input type="hidden" name="_method" value="delete">
 
                                 </form>
-                                <button class="btn btn-outline-primary btnUpdate"
-                                    data-toggle="modal"
-                                    data-target="#modalUpdate"
-                                    data-id="{{ $d->id }}"
-                                    data-title="{{ $d->title }}"
-                                    data-content="{{ $d->content }}"
+                                <button class="btn btn-outline-primary btnUpdate" data-toggle="modal"
+                                    data-target="#modalUpdate" data-id="{{ $d->id }}"
+                                    data-title="{{ $d->title }}" data-content="{{ $d->content }}"
                                     data-id_category="{{ $d->id_category }}">
                                     <i class="fa fa-edit"></i>
                                 </button>
@@ -94,12 +90,12 @@
 
                         <div class="form-group">
                             <label for="">Titulo:</label>
-                            <input type="text" class="form-control" name="title">
+                            <input type="text" class="form-control" name="title" value="{{ old('title') }}">
                         </div>
 
                         <div class="form-group">
                             <label for="">Descripcion:</label>
-                            <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
+                            <textarea name="content" id="" cols="30" rows="10" class="form-control">{{ old('content') }}</textarea>
                         </div>
 
                         <div class="form-group">
@@ -157,13 +153,13 @@
                     </button>
                 </div>
 
-                <form action="/admin/post" method="POST" enctype="multipart/form-data">
+                <form action="/admin/post/update" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
 
                         <div class="form-group">
                             <label for="">Titulo:</label>
-                            <input id="title" type="text" class="form-control" name="name">
+                            <input id="title" type="text" class="form-control" name="title">
                         </div>
 
                         <div class="form-group">
@@ -179,7 +175,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <input type="text" name="id" id="idUpdate">
+                        <input type="hidden" name="id" id="idUpdate">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -194,25 +190,25 @@
 
 @section('scripts')
     <script>
-        window.onload =()=>{
+        window.onload = () => {
             var idEliminar = 0
-            let buttons =document.getElementsByClassName('btnEliminar');
+            let buttons = document.getElementsByClassName('btnEliminar');
             console.log(buttons)
-            for(var x=0;x<buttons.length;x++){
-                buttons[x].addEventListener('click', (evt)=>{
+            for (var x = 0; x < buttons.length; x++) {
+                buttons[x].addEventListener('click', (evt) => {
                     //evt.stopPropagation();
                     idEliminar = evt.target.dataset.id
                     alert(idEliminar)
                 })
             }
             //btn eliminar
-            document.querySelector("#btnEliminar").addEventListener('click', ()=>{
+            document.querySelector("#btnEliminar").addEventListener('click', () => {
                 //alert("Vas a eliminar"+idEliminar)
-                document.querySelector("#formEliminar_"+idEliminar).requestSubmit()
+                document.querySelector("#formEliminar_" + idEliminar).requestSubmit()
             })
             //btn update
             let btns = document.querySelectorAll(".btnUpdate")
-            btns.forEach(ele=>ele.addEventListener('click',(event)=>{
+            btns.forEach(ele => ele.addEventListener('click', (event) => {
                 let id = event.target.dataset.id
                 let t = event.target.dataset.title
                 let c = event.target.dataset.content

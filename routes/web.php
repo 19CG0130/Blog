@@ -13,10 +13,8 @@ Route::get('/login', function () {
 Route::get('/contacto', function () {
     return view('front.contacto');
 });
-Route::get('/post/{id}', function ($id) {
-    return view('front.post')
-    ->with('id',$id);
-});
+
+Route::get('/post/{slug}', [IndexController::class, 'view']);
 
 Route::group(['prefix'=>'/admin','alias'=>'admin'],function(){
     Route::get('/',function (){
@@ -25,6 +23,7 @@ Route::group(['prefix'=>'/admin','alias'=>'admin'],function(){
     Route::get('/users',[UsersController::class,'index']);
     Route::post('/users',[UsersController::class,'store']);
     Route::resource('post', PostController::class);
+    Route::post('/post/update', [PostController::class, 'update']);
 });
 Auth::routes();
 

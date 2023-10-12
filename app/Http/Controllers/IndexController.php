@@ -16,4 +16,13 @@ class IndexController extends Controller
             ->with('cuantos',$total)
             ->with('datos',$consulta);
     }
+    public function view($slug) {
+        if(Post::where('slug', $slug)->exists()){
+            $post = Post::where('slug', $slug)->first();
+            return view('front.post')
+                ->with('datos', $post);
+        }else{
+            return redirect('/');
+        }
+    }
 }

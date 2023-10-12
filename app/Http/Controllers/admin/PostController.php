@@ -27,6 +27,7 @@ class PostController extends Controller
             ->with('registros', $datos)
             ->with('categorys',$c);
     }
+    //hace que se inserte el registro y se guarde la img en la cacrpeta
     public function store(Request $request) {
         $reglas = Validator::make($request->all(),[
             'title'=>'required|min:5|max:255',
@@ -78,5 +79,32 @@ class PostController extends Controller
             return back()
                 ->with('success','Datos eliminados correctamente');
     }
+    public function update(Request $request) {
+        $reglas = Validator::make($request->all(),[
+            'title'=>'required|min:5|max:255',
+            'content'=>'required',
+            'id_category'=>'required',
+        ]);
+        if($reglas->fails()){
+            return back()
+            ->withInput()
+            ->with('errorInsertar','Favor de llenar todos los campos')
+            ->withErrors($reglas);
+        }else{
+
+            //registro que se actualiza
+            $registro = Post::find($request->id);
+            $registro->title = $request->title; // update post set title='adsadadadad'
+            $registro->content = $request->content; // update post set title='adsadadadad'
+            $registro->id_category = $request->id_category; // update post set title='adsadadadad'
+            $registro->save(); //lo guarda
+
+            return back()
+            ->with('success','Datos actualizados correctamente');
+            //dd("DATO INSERTADO");
+            //dd("CUMPLE");
+        }
+        //dd($request);
+    }//llave store
     
 }
